@@ -1,6 +1,6 @@
 # Coding-Guidelines
 Javascript Coding Guidelines
-Gwynniebee's Javascript Coding Guide
+Javascript Coding Guide
 ==============================
 
 ###Primitive type vs Reference type
