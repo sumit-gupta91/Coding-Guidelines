@@ -75,22 +75,35 @@ Pros of using a single var pattern :
 2.  Prevents logical errors when a variable is used before it’s defined
 3.  Helps you remember to declare variables and therefore minimize globals.
 
-Anti-Pattern             					Pattern
+Anti-Pattern             					
 ```
-myname = "global"; 						myname = "global";
-function func() {						function func() {
-	alert(myname);                                  		var myname; 
-	var myname = "local";                           		alert(myname); 
-	alert(myname);                                  		myname = "local";
-}                                                   			alert(myname); 
-func();								}		
-								func();	
+myname = "global"; 						
+function func() {						
+	alert(myname);                                  		 
+	var myname = "local";                           		 
+	alert(myname);                                  		
+}                                                   			 
+func();										
+									
 												
-Output                                          		Output
-undefined                                       		undefined
-local                                           		local
+Output                                          		
+undefined                                       		
+local                                           		
 ```
+Pattern : 
+```
+myname = "global";
+function func(){
+	var myname;
+	alert(myname);
+	myname = "local";
+	alert(myname);
+}
 
+func();
+Output : 
+undefined
+local
 ###for loops
 
 Anti-Pattern                                                                                          
