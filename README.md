@@ -104,8 +104,10 @@ func();
 Output : 
 undefined
 local
-###for loops
+```
 
+###for loops
+----------------
 Anti-Pattern                                                                                          
 ```
 function func( ) {                                
