@@ -1,5 +1,4 @@
 # Coding-Guidelines
-Javascript Coding Guidelines
 Javascript Coding Guide
 ==============================
 
@@ -76,20 +75,20 @@ Pros of using a single var pattern :
 2.  Prevents logical errors when a variable is used before it’s defined
 3.  Helps you remember to declare variables and therefore minimize globals.
 
-Anti-Pattern                                                       						 Pattern
+Anti-Pattern             					Pattern
 ```
-myname = "global"; 						        myname = "global";
-function func() {								function func() {
-	alert(myname);                                  var myname; 
-	var myname = "local";                           alert(myname); 
-	alert(myname);                                  myname = "local";
-}                                                   alert(myname); 
-func();											}		
-												func();	
+myname = "global"; 						myname = "global";
+function func() {						function func() {
+	alert(myname);                                  		var myname; 
+	var myname = "local";                           		alert(myname); 
+	alert(myname);                                  		myname = "local";
+}                                                   			alert(myname); 
+func();								}		
+								func();	
 												
-Output                                          Output
-undefined                                       undefined
-local                                           local
+Output                                          		Output
+undefined                                       		undefined
+local                                           		local
 ```
 
 ###for loops
@@ -102,9 +101,9 @@ function func( ) {
 		// do something with myarray[i]                 
 	}                                                   
 }     
-
+```
 Pattern
-
+```
 function looper() {
 	var i = 0,
 		max,
@@ -170,10 +169,12 @@ var man = {
 		//do something
 	}
 };                    
-
+```
 In this when user tries to access man.hasOwnProperty it won't be same.
 
 To avoid these scenario's use following pattern.
+
+```
 Object.prototype.hasOwnProperty.call(man, i);                   
 ```
 
