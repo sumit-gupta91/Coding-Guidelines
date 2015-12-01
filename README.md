@@ -41,7 +41,7 @@ bar[0] = 9;
 console.log(foo[0], bar[0]); // => 9, 9
 ```
 
-To get the class of every variable that we have defined use Object.prototype.toString()
+To get the class of every variable that we have defined use Object.prototype.toString() in place of typeof as typeof is just not very discriminating
 ```
 var toString = Object.prototype.toString;
 
@@ -53,6 +53,11 @@ toString.call(Math);        // [object Math]
 toString.call(undefined);   // [object Undefined]
 toString.call(null);        // [object Null]
 ```
+
+problem with typeof
+1. typeof null returns “object”
+2. typeof is applied to any object type other than Function, it returns “object”. It does not distinguish between generic objects and the other built-in types (Array, Arguments, Date, JSON, RegExp, Math, Error, and the primitive wrapper objects Number, Boolean and String
+3. typeof NaN //"number"
 
 
 ### Minimizing globals
