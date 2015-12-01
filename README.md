@@ -41,6 +41,20 @@ bar[0] = 9;
 console.log(foo[0], bar[0]); // => 9, 9
 ```
 
+To get the class of every variable that we have defined use Object.prototype.toString()
+```
+var toString = Object.prototype.toString;
+
+toString.call(new Date);    // [object Date]
+toString.call(new String);  // [object String]
+toString.call(Math);        // [object Math]
+
+// Since JavaScript 1.8.5
+toString.call(undefined);   // [object Undefined]
+toString.call(null);        // [object Null]
+```
+
+
 ### Minimizing globals
 JavaScript uses functions to manage scope. A variable declared inside of a function is local to that function and not available outside the function. On the other hand, global variables are those declared outside of any function or simply used without being declared.
 
