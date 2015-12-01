@@ -54,7 +54,7 @@ toString.call(undefined);   // [object Undefined]
 toString.call(null);        // [object Null]
 ```
 
-problem with typeof
+problem with typeof [reference](https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/)
 1. typeof null returns “object”
 2. typeof is applied to any object type other than Function, it returns “object”. It does not distinguish between generic objects and the other built-in types (Array, Arguments, Date, JSON, RegExp, Math, Error, and the primitive wrapper objects Number, Boolean and String
 3. typeof NaN //"number"
