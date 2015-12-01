@@ -106,6 +106,15 @@ undefined
 local
 ```
 
+
+###Arrays
+----------------
+
+1. Avoid using Array.prototype.push(arr.push)
+While dealing with large collections, direct assignment is faster than array.push
+Refer to this link to check the perfomances - [Perfomance comparison](http://jsperf.com/array-direct-assignment-vs-push/11)
+
+
 ###for loops
 ----------------
 Anti-Pattern                                                                                          
