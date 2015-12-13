@@ -256,3 +256,119 @@ function foo() {
 ```
 ####function hoisting
 The behavior of function declarations is pretty much equivalent to a named function expression. All variables, no matter where in the function body they are declared, get hoisted to the top of the function behind the scenes. The same applies for functions because they are just objects assigned to variables. The only “gotcha” is that when using a function declaration, the definition of the function also gets hoisted, not only its declaration.
+
+## Objects
+------------------------
+### Object declaration
+There are two ways in which an object can be declared 
+1. Literal notation
+The literal notation is quite simple.
+- Wrap the object in curly braces.
+- Separate the key value pairs by comma's which act as delimeters.
+```
+var a = {
+    firstName  : 'sumit'
+};
+```
+
+2. Objects from a constructor
+```
+var a = new Object();
+```
+Javascript has constructor functions which can be used to create objects. The constructor functions are similar to classes in Java.
+
+### new Object() vs Literal Notation
+Why use object literal over constructor functions for object creation ? 
+- Objects so created do not have a fixed structure.
+- Objects are mutable over time.
+- Objects in javascript are just hash tables of key value pairs where each key in an object can have primitive data types, objects or methods as there values.
+
+For all these scenarios it is better to use Object literals for object creation. Constructor functions on other hand in javascript are synonymous to classes in java which are used to create objects with a fixed structure and predefined values.
+
+#### Object constructor catch
+Object constructor accepts a parameter, based on the parameter it internally delegates object creation to other constructor and you may receive an unexpected object.
+
+```
+// a number object
+var o = new Object(1);
+console.log(o.constructor === Number); // true
+console.log(o.toFixed(2)); // "1.00"
+```
+In this case since we passed a number as an argument to the Object constructor it internally called number constructor.
+
+```
+// a string object
+var o = new Object("I am a string");
+console.log(o.constructor === String); // true
+// normal objects don't have a substring()
+// method but string objects do
+console.log(typeof o.substring); // "function"
+```
+In this case since we passed a string as an argument to the Object constructor it internally called string constructor.
+
+## Arrays 
+- Use array literals rather than array constructors for creation of arrays.
+    ```
+    // bad
+       const items = new Array();
+    
+    // good
+       const items = [];
+    ```
+- Use Array.push instead of directly assigning to an array index when pushing at the end of an array.
+    ```
+        var someStack = [];
+        // bad
+        someStack[someStack.length] = 'abracadabra';
+        // good
+        someStack.push('abracadabra');
+    ```
+- Spread operator 
+  Spread operator is a part of ES6 but using babel for backward compatibility, we     can easily use spread operator.
+
+  Spread operator can be used in a number of ways which is advantageous for arrays.
+  ```
+  //spread operator usage 
+  function myfunction(x, y, z) {}
+  var a = [1, 2, 3];
+  myfunction(...a);
+  ```
+  simplifies passing array as arguments.
+  ```
+  //how similar code has to be written in ES5
+  function myFunction(x, y, z) {}
+  var a = [1, 2, 3];
+  myFunction.apply(undefined, a);
+  ```
+  
+  Spread operator acts as a better push opertaor.
+  Code with ES6
+  ```
+  var arr1 = [1, 2, 3],
+      arr2 = [4, 5, 6];
+    arr1.push(...arr2)
+  ```
+  Similar code in ES5
+  ```
+  var arr1 = [1, 2, 3],
+      arr2 = [4, 5, 6];
+    arr1.push.apply(arr1, arr2);
+  ```
+  
+  Spread operator acts a powerful array literal.
+  Code snippet for array in ES6
+  ```
+  var arr1 = [2, 3];
+  var arr2 = [1, ...arr1, 4, 5, 6];
+  ```
+  Similar code snippet written in ES5
+  ```
+  var arr1 = [2, 3];
+  var arr2  = [1].concat(arr1, [4, 5, 6]);
+  ```
+  - Array.from
+    Array.from is a part of ES6 and should be use to convert array like objects and     interable objects into arrays.
+    ```
+    const foo = document.querySelectorAll('.foo');
+    const nodes = Array.from(foo);
+    ```
