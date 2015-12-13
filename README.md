@@ -366,9 +366,9 @@ In this case since we passed a string as an argument to the Object constructor i
   var arr1 = [2, 3];
   var arr2  = [1].concat(arr1, [4, 5, 6]);
   ```
-  - Array.from
-    Array.from is a part of ES6 and should be use to convert array like objects and     interable objects into arrays.
-    ```
-    const foo = document.querySelectorAll('.foo');
-    const nodes = Array.from(foo);
-    ```
+- Array.from
+  Array.from is a part of ES6 and should be use to convert array like objects and     interable objects into arrays.
+  ```
+  const foo = document.querySelectorAll('.foo');
+  const nodes = Array.from(foo);
+  ```
