@@ -1,0 +1,79 @@
+# Coding Conventions
+This guide should not be considered a styleguide and is not written with a style guide in mind. This document however covers a few conventions which should be followed while writing code, these conventions when followed will lead to cleaner code. Clean code will lead to better readability, faster PR reviews, lesser bugs, decrease in TAT(Turn around times) etc etc.
+
+## What is clean code ?
+
+> I like my code to be elegant and efficient. The logic should be straightforward to make it hard for bugs to hide, the dependencies minimal to ease maintenance, error handling complete according to an articulated strategy, and performance close to optimal so as not to tempt people to make the code messy with unprincipled optimizations. Clean code does one thing well.``` 
+
+**Bjarne Stroustrup, inventor of C++.**
+
+> Clean code is simple and direct. Clean code reads like well-written prose. Clean code never obscures the designer’s intent but rather is full of crisp abstractions and straightforward lines of control.
+
+**Grady Booch, author of Object Oriented Analysis and Design with Applications**
+
+> Clean code can be read, and enhanced by a developer other than its original author. It has unit and acceptance tests. It has meaningful names. It provides one way rather than many ways for doing one thing. It has minimal dependencies, which are explicitly defined, and provides a clear and minimal API. Code should be literate since depending on the language, not all necessary information can be expressed clearly in code alone. 
+**Big” Dave Thomas.**
+
+> You know you are working on clean code when each routine you read turns out to be pretty much what you expected. You can call it beautiful code when the code also makes it look like the language was made for the problem.
+
+**Ward Cunningham, inventor of Wiki.**
+
+## Clean code and Readability
+If we read through all the thoughts of the above people, one of the common thing is readability. `Clean code is readable and easy to understand by everyone whether the reader is the author of the code or a new programmer.`
+
+## Why does Readability matter ?
+All the tasks that we do can be broadly categorised into three things:
+* The user wants to add a new feature. To do this, they must find the right spot and add the feature, without also adding bugs.
+* The user wants to fix a bug. They’ll need to find the source of the bug and edit the code so it stops happening, without introducing different bugs.
+* The user wants to verify an edge case acts a certain way. They’ll want to find the right code, then trace through the logic to simulate what would happen.
+
+All the above tasks become much more easier if we have readable code, it becomes much more easy to discover the code, it becomes much more easy to understand the code, understandable code leads to lesser bugs.
+
+Now that all this has been said and we do know readable code matters, let's dig into what actually makes code clean/ readable.
+
+### Variable Names
+Names are everywhere in software. We name our variables, our functions, our arguments, classes, and packages. We name our source files and the directories that contain them. We name our jar files and war files and ear files. We name and name and name. Because we do so much of it, we'd better do it well.
+
+#### Use intention revealing names
+      const d // time elapsed since creation
+
+        **vs**
+
+      const elapsedTimeInDays
+      const daysSinceCreation
+      const daysSinceInception
+
+#### Don't be cute
+If names are too clever, they will be memorable only to people who share the author’s sense of humor, and only as long as these people remember the joke.
+
+    whack() vs kill()
+    holyHandGrenade() vs deleteItems()
+    elegantlyConvertToArray() vs toArray()
+    deductionMonthSameAsCurrentMonth vs isSameAsCurrentMonth
+    getDeductionMonthMoment() vs getTaxPaymentMonth() or getMonthForTaxPayment()
+
+#### Pick One word per concept
+Pick one word for one abstract concept and stick with it. For instance, it’s confusing to have fetch, retrieve, and get as equivalent methods being used in different places for same functionality. 
+
+For example:
+
+    fetchTaxPayment(), getPayouts(), retrievePayoutLinks()
+                  vs
+    getTaxPayments(), getPayouts(), getPayoutLinks()
+
+#### Make meaningful distinctions
+A lof of times when we are writing loop in form of map, reduce and filter. We use poor names for the singular element in an array, it can lead to poor readability of code if we are reading values from that singular element. For example
+      
+
+####
+## Why Readability ?
+I am often asked this questions and I myself ponder over this question a lot, there are a few reasons which I can come up with which makes readability the most important thing to target when we are writing code.
+
+Reasons:
+
+### Comments
+Should we write comments in our code ? Yes we should write comments in our code but there has to a fine balance. 
+
+In general comments should discuss why something is done, its purpose and goal. The code already shows how it is done, so commenting on it is redundant and is the violation of the DRY principle.
+
+Variable names should be well chosen and meaningful. Even worse than meaningless names are misleading names. Have you ever had someone explain inconsistencies in legacy code such as "The function getData really writes data to disk ?"
