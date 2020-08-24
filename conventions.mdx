@@ -43,11 +43,10 @@ Names are everywhere in software. We name our variables, our functions, our argu
       const daysSinceCreation
       const daysSinceInception
 
-#### Don't be cute
+#### Don't go vocab while naming    
 If names are too clever, they will be memorable only to people who share the author’s sense of humor, and only as long as these people remember the joke.
 
     whack() vs kill()
-    holyHandGrenade() vs deleteItems()
     elegantlyConvertToArray() vs toArray()
     deductionMonthSameAsCurrentMonth vs isSameAsCurrentMonth
     getDeductionMonthMoment() vs getTaxPaymentMonth() or getMonthForTaxPayment()
@@ -58,22 +57,110 @@ Pick one word for one abstract concept and stick with it. For instance, it’s c
 For example:
 
     fetchTaxPayment(), getPayouts(), retrievePayoutLinks()
+
                   vs
+
     getTaxPayments(), getPayouts(), getPayoutLinks()
+
+#### Add some meaningful context
+Suppose there are a few variable names, firstName, lastName, state, city, pincode. It is pretty clear when used together they form address object. Now when you see a state variable being used alone we won't be able to understand the context of the variable whereas when used as `address.state` or `addrState`, the user will be able to understand that it addresses state.
+
+#### Use Domain Specific variable names
+Whenever you are confused about a variable name, it is always good to look at what it is called in the business domain or ask your product manager what it is called by business, what is the official term for it.
 
 #### Make meaningful distinctions
 A lof of times when we are writing loop in form of map, reduce and filter. We use poor names for the singular element in an array, it can lead to poor readability of code if we are reading values from that singular element. For example
       
+### Functions
+The first rule of functions is that they should be small and the second rule about functions is that they should be smaller than that. I have written functions of all different sizes. I’ve written several nasty 3,000-line abominations. I’ve written scads of functions in the 100 to 300 line range. And I’ve written functions that were 20 to 30 lines long. What this experience has taught me, through long trial and error, is that functions should be very small.
 
-####
-## Why Readability ?
-I am often asked this questions and I myself ponder over this question a lot, there are a few reasons which I can come up with which makes readability the most important thing to target when we are writing code.
+Now the common question is how short should a function be, Right ? In the old ages people used to say function size should not be greater than the size of the screen, considering the screen size in those days it could be max 24 lines and 80 columns but now with bigger and better screens, font size can be reduced and the function size can be 100 lines easily and 150 characters. So this defintion does not works. 
 
-Reasons:
+Story - Robert C. Martin once was looking a visual effects library with Kent Beck, there were a number of visual effects possible with this library for example sparkle etc. Robert C. Martin was mind blown by how small the functions were. Each function was 2 or 3 lines long. Each was transparently obvious. Each told a story and led to the next in a compelling order. That's how short your functions should be!. 
+
+#### Do One Thing
+* Functions should do only one thing. They should do it well , They should do it only.
+
+* One level of Abstraction per function - In order to make sure our functions are doing “one thing,” we need to make sure that the statements within our function are all at the same level of abstraction.
+
+* Reading Code from Top to Bottom - We want the code to read like a top-down narrative. We want every function to be followed by those at the next level of abstraction so that we can read the program, descending one level of abstraction at a time as we read down the list of functions.
+
+#### Function Arguments
+The ideal number of arguments for a function is zero (niladic). Next comes one (monadic), followed closely by two (dyadic). Three arguments (triadic) should be avoided where possible. More than three (polyadic) requires very special justification—and then shouldn’t be used anyway.
+
+Arguments are also hard from a testing point of view. Imagine the difficulty of writing all the test cases to ensure that all the various combinations of arguments work properly.
+
+#### Have no side effects
+Side effects are lies. Your function promises to do one thing, but it also does other hidden things. Sometimes it will make unexpected changes to the variables of its own class. Sometimes it will make them to the parameters passed into the function or to system globals.
+
+#### Do not Repeat Yourself
+Duplication may be the root of all evil in software. Many principles and practices have been created for the purpose of controlling or eliminating it. That said premature abstraction is also a problem. If you have all the use cases in your hand go ahead and create an abstraction, otherwise duplication at two places should be fine.
+
+Using all these principle we will refactor a snippet of code
+
+      export const getTaxPaymentDetails = taxPayments => {
+        let totalAmount = 0;
+        let ids = [];
+        let greatestAmount = getIn(taxPayments, [0, 'total_amount']);
+        let taxPaymentDetails;
+        taxPayments.forEach(taxPayment => {
+          totalAmount = totalAmount + taxPayment.total_amount;
+          ids.push(taxPayment.id);
+          if (taxPayment.total_amount > greatestAmount) {
+            greatestAmount = taxPayment.total_amount;
+          }
+        });
+        taxPaymentDetails = {
+          paymentMode: greatestAmount > IMPS_THRESHOLD * 100 ? 'RTGS' : 'IMPS',
+          ids,
+          totalAmount,
+        };
+        if (taxPayments.length === 1) {
+          const tds = getIn(taxPayments, [0, 'tax_payment', 'tds']);
+          const tdsCode = getIn(tds, ['tds_category']);
+          const createdAt = getIn(tds, ['created_at']);
+          taxPaymentDetails.defaultNarration = `TDS ${getIn(tdsCode, [
+            'code',
+          ])} ${moment.unix(createdAt).format('MMMM YYYY')}`.substr(0, 30);
+        }
+        return taxPaymentDetails;
+      };
+
+This code snipped is not at all readable, it seems to combined of multiple stories or in different words it was doing more than one thing. Variable names were not correct such as `tdsCategory being converted to tdsCode` etc. Functional programming was not fully leveraged. It contains multiple small functions, which in ideal case should be independently unit tested. 
+
+
+      const getMaximumTax = (taxPayments) =>
+            taxPayments
+                  .map((taxtPayment) => taxPayment.total_amount)
+                  .sort((totalAmountA, totalAmountB) => totalAmountB - totalAmountA)[0];
+
+      const getPaymentMode = (tax) => 
+            tax > IMPS_THRESHOLD * 100 ? 'RTGS' : 'IMPS';
+
+      const getDefaultNarration = taxPayment => {
+            const tds = getIn(taxPayment, ['tax_payment', 'tds']);
+            const tdsCode = getIn(tds, ['tds_category', 'code']);
+            const createdAt = getIn(tds, ['created_at']);
+            taxPaymentDetails.defaultNarration = `TDS ${tdsCode} ${moment
+                  .unix(createdAt)
+                  .format('MMMM YYYY')}`.substr(0, 30);
+      };
+
+       export const getTaxPaymentDetails = taxPayments => {
+            const maximumTaxPayable = getMaximumTax(taxPayments);
+            const paymentMode = getPaymenMode(maximumTaxPayable);
+            const defaultNarration = getDefaultNarration(taxPayments);
+            const taxDetails = taxPayments.reduce((acc, taxPayment) => ({
+                ids: [...acc.ids, taxPayment.id],
+                totalAmount: acc.totalAmount + taxPayment.total_amount,
+                paymentMode,
+              }), {});
+            return {
+                  ...taxDetails,
+                  ...(taxPayments.length === 1 ? { defaultNarration} : {})
+            }
+      }
 
 ### Comments
-Should we write comments in our code ? Yes we should write comments in our code but there has to a fine balance. 
 
-In general comments should discuss why something is done, its purpose and goal. The code already shows how it is done, so commenting on it is redundant and is the violation of the DRY principle.
-
-Variable names should be well chosen and meaningful. Even worse than meaningless names are misleading names. Have you ever had someone explain inconsistencies in legacy code such as "The function getData really writes data to disk ?"
+Will be adding here for comments
