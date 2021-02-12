@@ -41,6 +41,25 @@ bar[0] = 9;
 console.log(foo[0], bar[0]); // => 9, 9
 ```
 
+To get the class of every variable that we have defined use Object.prototype.toString() in place of typeof as typeof is just not very discriminating
+```
+var toString = Object.prototype.toString;
+
+toString.call(new Date);    // [object Date]
+toString.call(new String);  // [object String]
+toString.call(Math);        // [object Math]
+
+// Since JavaScript 1.8.5
+toString.call(undefined);   // [object Undefined]
+toString.call(null);        // [object Null]
+```
+
+problem with typeof [reference](https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/)
+1. typeof null returns “object”
+2. typeof is applied to any object type other than Function, it returns “object”. It does not distinguish between generic objects and the other built-in types (Array, Arguments, Date, JSON, RegExp, Math, Error, and the primitive wrapper objects Number, Boolean and String
+3. typeof NaN //"number"
+
+
 ### Minimizing globals
 JavaScript uses functions to manage scope. A variable declared inside of a function is local to that function and not available outside the function. On the other hand, global variables are those declared outside of any function or simply used without being declared.
 
@@ -105,6 +124,15 @@ Output :
 undefined
 local
 ```
+
+
+###Arrays
+----------------
+
+1. Avoid using Array.prototype.push(arr.push)
+While dealing with large collections, direct assignment is faster than array.push
+Refer to this link to check the perfomances - [Perfomance comparison](http://jsperf.com/array-direct-assignment-vs-push/11)
+
 
 ###for loops
 ----------------
